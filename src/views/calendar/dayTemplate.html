@@ -1,0 +1,14 @@
+<div class="cal-month-day">
+
+    <span
+      class="pull-right"
+      data-cal-date
+      ng-click="calendarCtrl.dateClicked(day.date)"
+      ng-bind="day.label">
+    </span>
+
+  <small style="position: absolute; bottom: 10px; left: 5px">
+    There are {{ day.events.length }} events on this day
+  </small>
+
+</div>
