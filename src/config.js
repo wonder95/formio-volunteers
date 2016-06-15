@@ -19,9 +19,25 @@ angular.module('formioAppBasic').constant('AppConfig', {
     userRegisterForm: APP_URL + '/user/register'
   },
   resources: {
-    user: {
-      form: APP_URL + '/user',
-      resource: 'UserResource'
+    volunteer: {
+      form: APP_URL + '/volunteer',
+      resource: 'VolunteerResource'
+    },
+    staff: {
+      form: APP_URL + '/staff',
+      resource: 'StaffResource'
+    },
+    shift: {
+      form: APP_URL + '/shift',
+      resource: 'ShiftResource'
+    },
+    training: {
+      form: APP_URL + '/training',
+      resource: 'TrainingResource'
+    },
+    event: {
+      form: APP_URL + '/event',
+      resource: 'EventResource'
     }
   }
 });
