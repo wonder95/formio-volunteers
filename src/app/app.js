@@ -38,30 +38,13 @@
       $stateProvider
         .state('home', {
           url: '/',
-          templateUrl: 'views/home.html'
+          templateUrl: 'views/home.html',
         })
         .state ('calendar', {
           url : '/calendar',
           templateUrl: 'views/calendar/index.html',
-          controller: function ($scope, moment, calendarConfig) {
-
-            // Calendar configs
-            $scope.calendarView = 'month';
-            $scope.calendarDate = new Date();
-            $scope.calendarTitle = 'My Title';
-
-            $scope.events = [];
-            $scope.viewDate = moment().startOf('month').toDate();
-
-            calendarConfig.dateFormatter = 'moment';
-            calendarConfig.templates.calendarMonthCell = 'views/calendar/dayTemplate.html';
-
-            $scope.$on('$destroy', function() {
-              calendarConfig.templates.calendarMonthCell = 'mwl/calendarMonthCell.html';
-            });
-
-          },
-
+          controller: 'calendarController',
+          controllerAs: 'vm'
         });
 
       // Register all of the resources.

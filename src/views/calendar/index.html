@@ -1,9 +1,12 @@
 <h1>Shift Calendar</h1>
 
+<h2 class="text-center">{{ calendarTitle }}</h2>
+
 <ng-include src="'views/calendar/calendarControls.html'"></ng-include>
+
 <mwl-calendar
-  view="calendarView"
-  view-date="calendarDate"
+  view="vm.calendarView"
+  view-date="vm.viewDate"
   events="events"
   view-title="calendarTitle"
   cell-is-open="true">
