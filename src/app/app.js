@@ -18,6 +18,7 @@
     'AppConfig',
     'calendarConfig',
     '$injector',
+    '$locationProvider',
     function(
       $stateProvider,
       $urlRouterProvider,
@@ -26,7 +27,8 @@
       FormioResourceProvider,
       AppConfig,
       calendarConfig,
-      $injector
+      $injector,
+      $locationProvider
     ) {
       FormioProvider.setAppUrl(AppConfig.appUrl);
       FormioProvider.setBaseUrl(AppConfig.apiUrl);
@@ -53,6 +55,8 @@
       });
 
       $urlRouterProvider.otherwise('/');
+
+      $locationProvider.html5Mode(true);
 
     }
   ]);

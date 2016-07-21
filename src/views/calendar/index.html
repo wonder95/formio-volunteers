@@ -7,7 +7,9 @@
 <mwl-calendar
   view="vm.calendarView"
   view-date="vm.viewDate"
-  events="events"
+  events="vm.events"
   view-title="calendarTitle"
-  cell-is-open="true">
+  cell-is-open="true"
+  cell-modifier="vm.cellModifier(calendarCell)"
+>
 </mwl-calendar>

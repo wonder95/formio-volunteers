@@ -7,8 +7,25 @@
       ng-bind="day.label">
     </span>
 
-  <small style="position: absolute; bottom: 10px; left: 5px">
-    There are {{ day.events.length }} events on this day
-  </small>
+  <div ng-if="day.todayHasShifts">{{ day.text }}</div>
 
-</div>
+      <table ng-class="{ today: day.isToday }" class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <td>Station</td>
+              <td>Position</td>
+              <td>Name</td>
+            </tr>
+          </thead>
+            <tbody ng-repeat="shift in day.shiftTables">
+              <tr ng-repeat="slot in shift.slots">
+                <td align="top" ng-attr-rowspan>{{ shift.station }}</td>
+                <td>{{ slot.position }}</td>
+                <td>{{ slot.name }}</td>
+              </tr>
+              <tr>
+                <td colspan="3">
+              </td>
+            </tr>
+          </tbody>
+      </table>
