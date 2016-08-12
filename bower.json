@@ -11,7 +11,7 @@
     "animate.css": "^3.5.1",
     "angular": "^1.5.6",
     "lodash": "^4.13.1",
-    "ng-formio-helper": "^0.17.0",
+    "ng-formio-helper": "^0.19.0",
     "ng-formio": "^1.8.11",
     "font-awesome": "^4.6.3",
     "ng-formio-grid": "^0.7.1",
@@ -24,6 +24,10 @@
   },
   "resolutions": {
     "angular": "^1.5.6",
-    "angular-bootstrap-calendar": "^0.21.3"
+    "angular-bootstrap-calendar": "^0.21.3",
+    "ng-formio-helper": "^0.19.0",
+    "angular-ui-select": "^0.19.1",
+    "ng-formio": "^1.8.11",
+    "ng-formio-grid": "^0.8.2"
   }
 }
