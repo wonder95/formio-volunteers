@@ -25,6 +25,15 @@
       vm.error = 'There was an error.';
     };
 
+    vm.addName = function(userId) {
+      var addTest = 1;
+
+    };
+
+    vm.removeName = function(userId) {
+      var addTest = 1;
+    };
+
     var startDate = moment(this.viewDate).toISOString();
     var endDate = moment(this.viewDate).endOf('month').toISOString();
 
@@ -48,6 +57,8 @@
         this.cell = cell;
         vm.todayShifts = [];
 
+        // monthShifts contains all of the shift records for the month, so loop through
+        // them all and categorize each one by date and time of day (am or pm).
         monthShifts.forEach(function(shift, index) {
           var shiftDate = moment(shift.data.date).format('YYYY-MM-DD');
           // Now we need to see if this shift belongs to this day.
@@ -67,14 +78,11 @@
             };
 
             var slots = _.map(shift.data.slots, function(slot) {
-              var position = slot.position;
-              var name = slot.name.data.fullName;
-              var userId = slot.name._id;
-
               return {
-                "position": position,
-                "name": name,
-                "userId": userId
+                "position": slot.position,
+                "positionId": slot.positionId,
+                "name": slot.name.data.fullName,
+                "userId": slot.name._id
               };
             });
 
@@ -96,34 +104,85 @@
         dayParts.forEach(function(dayPart){
           stations.forEach(function(station) {
             // Get shift from todayShifts if there is one.
-            if (typeof vm.todayShifts[dayPart] != 'undefined') {
+            if (typeof vm.todayShifts[dayPart] !== 'undefined') {
               vm.todayShift = _.find(vm.todayShifts[dayPart], function(shift){
                 return shift.station == station.id;
               });
             }
 
             // Build table for station.
-            var obj = {
+            var tableObj = {
               dayPart: dayPart,
               station: station.id,
               slots: []
             };
 
             // Loop through defined positions
-            station.positions.forEach(function(position) {
-              // Look for match in vm.todayShift if it exists.
-              obj.slots.push({
-                position: position,
-                name: position + " Name"
+            station.positions.forEach(function(position, index) {
+              var name = '';
+              var isUser = 0;
+              var nameOption = '';
+              // Create variable of positionId we are looking to match in the shift data.
+              var pagePositionId = index + 1;
+              // Look for match in vm.todayShift if it exists. At this point we are
+              // in the appropriate dayPart, and since there is only one shift per station
+              // per dayPart, if we find an array in vm.todayShift, it's the one we want.
+              if (typeof vm.todayShift !== 'undefined')  {
+                // Need to get values from corresponding slot in todayShift.slots.
+                // If there is a match in vm.todayShift.slots[x].positionId, get the name.
+                var matchPosition = _.find(vm.todayShift.slots, function(slot){
+                  return slot.positionId == position.positionId;
+                });
+
+                // Set one of four possible variables for nameOption:
+                // printNameRemove,  printName, printSignupLink, printBlank
+
+                // There is a name here, so display it.
+                if (matchPosition) {
+                  name = matchPosition.name;
+                  // Set a value so in the template we know to display this as
+                  // a link to remove the signup.
+                  nameOption = matchPosition.userId === vm.currentUser._id ? 'printNameRemove' : 'printName';
+                }
+                // No registration for this slot, so show a signup link.
+                else {
+                  name = "Sign Up";
+                  // We also need to determine if the person has the ability to
+                  // sign up for this slot based on things like whether or not
+                  // they are an AO, a PFF, etc.
+                  var signupAllowed = shiftService.checkSlotAccess(vm.currentUser, position.positionName);
+                  nameOption = signupAllowed ? 'printSignupLink' : 'printBlank';
+                }
+              }
+              // There are no shifts for today.
+              else {
+                name = "Sign Up";
+                // We need to determine if the person has the ability to
+                // sign up for this slot based on things like whether or not
+                // they are an AO, a PFF, etc.
+                var signupAllowed = shiftService.checkSlotAccess(vm.currentUser, position.positionName);
+                if(signupAllowed) {
+                  nameOption = 'printSignupLink';
+                }
+                else {
+                  nameOption = 'printBlank';
+                }
+              }
+
+              // Add final filled object to table object.
+              tableObj.slots.push({
+                position: position.positionName,
+                positionId: position.positionId,
+                name: name,
+                isUser: isUser,
+                nameOption: nameOption
               });
             });
 
-            //TODO: Fill in slots from vm.todayShifts.
-
-            vm.shiftTables.push(obj);
+            vm.shiftTables.push(tableObj);
           });
         });
-
+        // Create the final object passed to the calendar template.
         cell.shiftTables = vm.shiftTables;
       })
     };

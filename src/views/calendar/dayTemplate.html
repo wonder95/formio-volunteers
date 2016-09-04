@@ -21,7 +21,11 @@
               <tr ng-repeat="slot in shift.slots">
                 <td align="top" ng-attr-rowspan>{{ shift.station }}</td>
                 <td>{{ slot.position }}</td>
-                <td>{{ slot.name }}</td>
+                <td ng-if="slot.nameOption == 'printNameRemove'" class="print-name-remove"><a href="" ng-click="vm.removeName(slot.name)">{{ slot.name }}</a></td>
+            <!--<td ng-if="slot.nameOption == 'printNameRemove'" class="print-name-remove"><button type="button" class="btn btn-default" ng-click="vm.removeName(slot.name)">{{ slot.name }}</button></td> -->
+                <td ng-if="slot.nameOption == 'printName'" class="print-name">{{ slot.name }}</td>
+                <td ng-if="slot.nameOption == 'printSignupLink'" class="print-signup-link"><a href="" ng-click="vm.addName(slot.name)">Sign Up</a></td>
+                <td ng-if="slot.nameOption == 'printBlank'" class="print-blank"></td>
               </tr>
               <tr>
                 <td colspan="3">

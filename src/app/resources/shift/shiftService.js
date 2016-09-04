@@ -26,10 +26,6 @@
           return $q.reject(error.data);
         });
     };
-/*
-    var addNameToShift = function(locationid) {
-      return $http.get('/api/locations/' + locationid);
-    }; */
 
     var getStationConfig = function() {
       // Get position info from appropriate Config resource submission.
@@ -53,8 +49,16 @@
               var stationNum = key.substring(7);
               stationObj.id = stationNum;
               var positionName = "position" + stationNum;
+              var positionId = "positionId" + stationNum;
               angular.forEach(stationData, function(slotData, slotKey) {
-                stationSlots.push(slotData[positionName]);
+                // Create object to add to stationSlots
+                var positionObj = {
+                  positionName: slotData[positionName],
+                  positionId: slotData[positionId]
+                };
+
+                // Add object to stationSlots array.
+                stationSlots.push(positionObj);
               });
               // Add positions to station object.
               stationObj.positions = stationSlots;
@@ -68,10 +72,43 @@
         });
     };
 
+    // Function to check to see if current user is allowed to sign up for a
+    // particluar slot.
+    var checkSlotAccess = function(currentUser, position) {
+      var slotAccess = 0;
+      switch (position) {
+        case 'AO':
+          slotAccess = currentUser.data.driving.ao ? 1 : 0;
+          break;
+        case 'PFF':
+          slotAccess = currentUser.probationary ? 1 : 0;
+          break;
+        case 'FF':
+          slotAccess = (currentUser.data.group == 'suppression' && !currentUser.data.probationary) ? 1 : 0;
+          break;
+      }
+      return slotAccess;
+    };
+
+    var addNameToShift = function(locationid, userId) {
+      var addTest = 1;
+
+    };
+
+    var removeNameFromShift = function(currentUser) {
+      var addTest = 1;
+
+    };
+
+
+
+
     return {
       getShiftsMonth: getShiftsMonth,
-    //addNameToShift: addNameToShift,
-      getStationConfig: getStationConfig
+      getStationConfig: getStationConfig,
+      checkSlotAccess: checkSlotAccess,
+      addNameToShift: addNameToShift,
+      removeNameFromShift:removeNameFromShift
     };
   }
 })();
