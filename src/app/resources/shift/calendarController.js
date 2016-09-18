@@ -25,15 +25,6 @@
       vm.error = 'There was an error.';
     };
 
-    vm.addName = function(userId) {
-      var addTest = 1;
-
-    };
-
-    vm.removeName = function(userId) {
-      var addTest = 1;
-    };
-
     var startDate = moment(this.viewDate).toISOString();
     var endDate = moment(this.viewDate).endOf('month').toISOString();
 
@@ -92,7 +83,7 @@
             vm.todayShifts[shift.data.ampm].push(shiftData);
           }
         });
-        // Add arrays to cell object.
+        // Add variable to use on calendar page to tell when a day should have shifts.
         if (typeof vm.todayShifts.am != 'undefined' || typeof vm.todayShifts.pm != 'undefined') {
           cell.todayHasShifts = true;
         }
@@ -184,7 +175,18 @@
         });
         // Create the final object passed to the calendar template.
         cell.shiftTables = vm.shiftTables;
-      })
+      });
+
+      vm.addName = function(userId) {
+        var addTest = 1;
+
+      };
+
+      vm.removeName = function(userId) {
+        var addTest = 1;
+      };
+
+
     };
 
     $scope.$on('$destroy', function() {
