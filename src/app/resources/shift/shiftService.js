@@ -13,12 +13,14 @@
         params: {
           'date.date__gte': startDate,
           'date.date__lte': endDate,
-           limit: 10
         }
       };
-      //var shiftUrl = APP_URL + '/shift/submission';
-      //return $http.get(shiftUrl, config)
-      return $http.get('data/shifts.json')
+
+      // We have to manually add params because for some reason, passing the confi
+      // object to $http.get() isn't working.
+      var shiftUrl = APP_URL + '/shift/submission?data.date__gte=' + startDate + '&data.date__lte=' + endDate;
+      return $http.get(shiftUrl)
+      //return $http.get('data/shifts_september.json')
         .then(function(response) {
            return response.data;
         },
@@ -73,7 +75,7 @@
     };
 
     // Function to check to see if current user is allowed to sign up for a
-    // particluar slot.
+    // particular slot.
     var checkSlotAccess = function(currentUser, position) {
       var slotAccess = 0;
       switch (position) {
@@ -85,6 +87,9 @@
           break;
         case 'FF':
           slotAccess = (currentUser.data.group == 'suppression' && !currentUser.data.probationary) ? 1 : 0;
+          break;
+        default:
+          slotAccess = 0;
           break;
       }
       return slotAccess;
