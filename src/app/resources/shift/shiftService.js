@@ -38,8 +38,8 @@
           "x-jwt-token": token
         }
       };
-      //return $http.get(Formio.getAppUrl() + '/config/submission', config)
-      return $http.get('data/config.json')
+      return $http.get(APP_URL + '/config/submission', config)
+      //return $http.get('data/config.json')
         .then(function(result) {
           var stations = result.data;
           var allSlots = [];
