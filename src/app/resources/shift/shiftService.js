@@ -3,10 +3,11 @@
     .module('formioAppBasic')
     .service('shiftService', shiftService);
 
-  shiftService.$inject = ['$http', 'Formio'];
-  function shiftService($http, Formio) {
+  shiftService.$inject = ['$http', 'Formio', '$q'];
+  function shiftService($http, Formio, $q) {
     var getShiftsMonth = function (token, startDate, endDate) {
       var config = {
+        disableJWT: true,
         headers: {
           'x-jwt-token' : token
         },
@@ -30,15 +31,22 @@
     };
 
     var getStationConfig = function() {
+      // First check to see if info is stored locally.
+      var config = JSON.parse(localStorage.getItem('cfdConfig'));
+      if (config) {
+        return $q.resolve(config);
+      }
+
       // Get position info from appropriate Config resource submission.
       // Code borrowed from ngFormioHelper.FormioAuth.
       var token = localStorage.getItem('formioToken');
       var config = {
+        disableJWT: true,
         headers: {
           "x-jwt-token": token
         }
       };
-      return $http.get(APP_URL + '/config/submission', config)
+      return $http.get(Formio.getAppUrl() + '/config/submission', config)
       //return $http.get('data/config.json')
         .then(function(result) {
           var stations = result.data;
@@ -67,7 +75,11 @@
               allSlots.push(stationObj);
             }
           });
-           return allSlots;
+          // Store the info in localstorage so that it can be retrieved from there
+          // later and we don't have to keep hitting the API for it.
+          localStorage.setItem('cfdConfig', JSON.stringify(allSlots));
+
+          return allSlots;
         },
         function(err) {
           console.log(err);
