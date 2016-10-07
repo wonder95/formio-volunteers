@@ -17,7 +17,7 @@
               <td>Name</td>
             </tr>
           </thead>
-            <tbody ng-repeat="shift in day.shiftTables">
+            <tbody ng-repeat="shift in day.shiftTables" class="{{ shift.dayPart }}">
               <tr ng-repeat="slot in shift.slots">
                 <td align="top" ng-attr-rowspan>{{ shift.station }}</td>
                 <td>{{ slot.position }}</td>
