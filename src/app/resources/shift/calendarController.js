@@ -53,11 +53,9 @@
     vm.cellModifier = function(cell) {
       $q.all([stationPromise, shiftPromise]).then(function() {
         cell.text = 'Day has shifts';
-        //var stations = vm.appConfig.stations;
         var stations = vm.configSlots;
         var dayParts = vm.appConfig.dayParts;
         var monthShifts = vm.events;
-        // var currentUser = $rootScope.user;
         // Get the date for the cell.
         this.cellDate = moment(cell.date).format('YYYY-MM-DD');
        // Iterate over shifts to get ones for this day.
