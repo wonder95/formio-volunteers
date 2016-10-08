@@ -1,6 +1,6 @@
 (function() {
   angular.module('formioAppBasic')
-    .controller('calendarController', function($scope, moment, calendarConfig, $http, Formio, shiftService, AppConfig, $q) {
+    .controller('calendarController', function($scope, moment, calendarConfig, calendarHelper, $http, Formio, shiftService, AppConfig, $q) {
 
     var vm = this;
 
@@ -33,6 +33,22 @@
 
     var shiftPromise = shiftService.getShiftsMonth(token, startDate, endDate);
     shiftPromise.then(onShifts, onError);
+
+    $scope.$watch('vm.viewDate', function () {
+      // Get full range of days displayed for the month.
+      var monthView = calendarHelper.getMonthView(vm.events, vm.viewDate, vm.cellModifier);
+      var allDays = monthView.days;
+      var allDaysLast = allDays.length - 1;
+
+      // Get date range for month, including days from previous and following month
+      // that are displayed.
+      var startDate = moment(allDays[0].date).startOf('day').toISOString();
+      var endDate = moment(allDays[allDaysLast].date).endOf('day').toISOString();
+
+      // Get shift data from API.
+      var shiftPromise = shiftService.getShiftsMonth(token, startDate, endDate);
+      shiftPromise.then(onShifts, onError);
+    });
 
     vm.cellModifier = function(cell) {
       $q.all([stationPromise, shiftPromise]).then(function() {
