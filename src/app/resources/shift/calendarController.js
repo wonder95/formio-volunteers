@@ -50,6 +50,14 @@
       shiftPromise.then(onShifts, onError);
     });
 
+    vm.addName = function(userId) {
+      var addTest = 1;
+    };
+
+    vm.removeName = function(userId) {
+      var addTest = 1;
+    };
+
     vm.cellModifier = function(cell) {
       $q.all([stationPromise, shiftPromise]).then(function() {
         cell.text = 'Day has shifts';
@@ -190,17 +198,6 @@
         // Create the final object passed to the calendar template.
         cell.shiftTables = vm.shiftTables;
       });
-
-      vm.addName = function(userId) {
-        var addTest = 1;
-
-      };
-
-      vm.removeName = function(userId) {
-        var addTest = 1;
-      };
-
-
     };
 
     $scope.$on('$destroy', function() {
