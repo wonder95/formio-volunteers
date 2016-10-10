@@ -31,8 +31,6 @@
     var endpoint = APP_URL + '/shift/submission';
     var token = Formio.getToken();
 
-    var shiftPromise = shiftService.getShiftsMonth(token, startDate, endDate);
-    shiftPromise.then(onShifts, onError);
 
     $scope.$watch('vm.viewDate', function () {
       // Get full range of days displayed for the month.
@@ -211,6 +209,18 @@
         cell.shiftTables = vm.shiftTables;
       });
     };
+
+    // Get initial shift data for month
+    var monthView = calendarHelper.getMonthView(vm.events, vm.viewDate, vm.cellModifier);
+    var allDays = monthView.days;
+    var allDaysLast = allDays.length - 1;
+    // Get date range for month, including days from previous and following month
+    // that are displayed.
+    var startDate = moment(allDays[0].date).startOf('day').toISOString();
+    var endDate = moment(allDays[allDaysLast].date).endOf('day').toISOString();
+
+    var shiftPromise = shiftService.getShiftsMonth(token, startDate, endDate);
+    shiftPromise.then(onShifts, onError);
 
     $scope.$on('$destroy', function() {
       calendarConfig.templates.calendarMonthCell = 'mwl/calendarMonthCell.html';
