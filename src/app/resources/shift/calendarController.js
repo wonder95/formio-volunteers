@@ -182,6 +182,18 @@
                 }
               }
 
+              // We do a final check here to see if the table is in the past.
+              // It's easier to do it here instead of earlier, since we only
+              // have to change anything if it's a name or a sinup link.
+              if(cell.isPast && nameOption == 'printSignupLink') {
+                nameOption = 'printBlank'
+              }
+
+              if(cell.isPast && nameOption == 'printNameRemove') {
+                nameOption = 'printName'
+              }
+
+
               // Add final filled object to table object.
               tableObj.slots.push({
                 position: position.positionName,
