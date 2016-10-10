@@ -50,11 +50,11 @@
       shiftPromise.then(onShifts, onError);
     });
 
-    vm.addName = function(userId) {
+    vm.addName = function(positionId, userId) {
       var addTest = 1;
     };
 
-    vm.removeName = function(userId) {
+    vm.removeName = function(positionID, userId) {
       var addTest = 1;
     };
 
