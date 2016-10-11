@@ -50,31 +50,5 @@ angular.module('formioAppBasic').constant('AppConfig', {
     volunteerStaff: '57351171ffaa7a0100a57189',
     readOnly: '57351212ffaa7a0100a5718c'
   },
-  stations: [
-    {
-      id: "RH",
-      positions: ['RH2', 'RH16', 'RH14']
-    },
-    {
-      id: "WT",
-      positions: ['WT10', 'WT11', 'WT12', 'WT13', 'WT14', 'WT18']
-    },
-    {
-      id: 12,
-      positions: ['AO', 'FF', 'PFF']
-    },
-    {
-      id: 13,
-      positions: ['AO', 'FF', 'PFF']
-    },
-    {
-      id: 18,
-      positions: ['AO', 'FF', 'PFF']
-    },
-    {
-      id: 19,
-      positions: ['AO', 'FF', 'PFF']
-    }
-  ],
   dayParts: ['am','pm']
 });
