@@ -41,7 +41,7 @@ angular.module('formioAppBasic')
          * The index view for this resource where all of the resources can be seen. By default, the ngFormioHelper will set this
          * to a view of the data grid. 
          */
-        index: '',
+        index: 'app/resources/event/index.html',
         
         /**
          * This is the create view. This typically will contain the <formio> directive to allow you to create a new Resource.
@@ -97,10 +97,36 @@ angular.module('formioAppBasic')
        */
       controllers: {
         index: ['$scope', function($scope) {
+
+          $scope.eventColumns = [
+            {
+              key: 'eventTitle',
+              label: 'Event Title',
+              field: 'data.title'
+            },
+            {
+              key: 'eventLocation',
+              label: 'Location',
+              field: 'data.location'
+            },
+            {
+              key: 'eventDate',
+              label: 'Date',
+              field: 'data.startDateTime',
+              template: '<formio-grid-cell class="ui-grid-cell-contents" data="COL_FIELD|date :\'EEEE, MMMM d\'" component="col.colDef.component"></formio-grid-cell>'
+            },
+            {
+              key: 'eventTime',
+              label: 'Start Time',
+              field: 'data.startDateTime',
+              template: '<formio-grid-cell class="ui-grid-cell-contents" data="COL_FIELD|date :\'h:mm a\'" component="col.colDef.component"></formio-grid-cell>'
+            }
+          ];
+
           // You can register when an item in the index has been clicked by doing the following.
-          $scope.$on('rowView', function(event, resource) {
-            console.log(resource);
-          });
+        /*  $scope.$on('onGridReady:row', function(row) {
+            console.log(row);
+          }); */
         }],
         abstract: null,
         view: ['$scope', function($scope) {

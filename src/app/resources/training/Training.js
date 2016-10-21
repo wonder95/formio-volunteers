@@ -41,7 +41,7 @@ angular.module('formioAppBasic')
          * The index view for this resource where all of the resources can be seen. By default, the ngFormioHelper will set this
          * to a view of the data grid. 
          */
-        index: '',
+        index: 'app/resources/training/index.html',
         
         /**
          * This is the create view. This typically will contain the <formio> directive to allow you to create a new Resource.
@@ -98,9 +98,40 @@ angular.module('formioAppBasic')
       controllers: {
         index: ['$scope', function($scope) {
           // You can register when an item in the index has been clicked by doing the following.
-          $scope.$on('rowView', function(event, resource) {
+        /*$scope.$on('rowView', function(event, resource) {
             console.log(resource);
-          });
+          }); */
+
+          $scope.trainingColumns = [
+            {
+              key: 'trainingTitle',
+              label: 'Training Topic',
+              field: 'data.subject'
+            },
+            {
+              key: 'trainingLocation',
+              label: 'Location',
+              field: 'data.locationName'
+            },
+            {
+              key: 'trainingDate',
+              label: 'Date',
+              field: 'data.startDateTime',
+              template: '<formio-grid-cell class="ui-grid-cell-contents" data="COL_FIELD|date :\'EEEE, MMMM d\'" component="col.colDef.component"></formio-grid-cell>'
+            },
+            {
+              key: 'trainingStartTime',
+              label: 'Start Time',
+              field: 'data.startDateTime',
+              template: '<formio-grid-cell class="ui-grid-cell-contents" data="COL_FIELD|date :\'h:mm a\'" component="col.colDef.component"></formio-grid-cell>'
+            },
+            {
+              key: 'trainingEndTime',
+              label: 'End Time',
+              field: 'data.endDateTime',
+              template: '<formio-grid-cell class="ui-grid-cell-contents" data="COL_FIELD|date :\'h:mm a\'" component="col.colDef.component"></formio-grid-cell>'
+            }
+          ];
         }],
         abstract: null,
         view: ['$scope', function($scope) {
